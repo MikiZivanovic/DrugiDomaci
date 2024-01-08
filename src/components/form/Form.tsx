@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 interface FormValue {
     [key: string]: any
@@ -14,25 +14,51 @@ export function useFormContext() {
 }
 
 interface Props {
-    title: string;
-    onSubmit: (val: FormValue) => void,
+    title?: string;
+    className?: string;
+    formValue?: FormValue,
+    onChange?: (val: React.SetStateAction<FormValue>) => void,
+    onSubmit?: (val: FormValue) => void,
     children: React.ReactNode
 }
 
 export default function Form(props: Props) {
     const [formValue, setFormValue] = useState<FormValue>({})
+
+
+    useEffect(() => {
+        if (props.formValue) {
+            setFormValue(props.formValue)
+        } else {
+            setFormValue({});
+        }
+    }, [props.formValue])
+
     return (
-        <div>
-            <h2 className='text-center'>
-                <strong>{props.title}</strong>
-            </h2>
+        <div className={props.className}>
+            {
+                props.title && (
+                    <h2 className='text-center'>
+                        <strong>{props.title}</strong>
+                    </h2>
+                )
+            }
             <form onSubmit={e => {
                 e.preventDefault();
-                props.onSubmit(formValue);
+                props.onSubmit?.(formValue);
             }}>
                 <FormContext.Provider value={{
-                    value: formValue,
+                    value: props.formValue || formValue,
                     onChange: (name, value) => {
+                        if (props.onChange) {
+                            props.onChange(prev => {
+                                return {
+                                    ...prev,
+                                    [name]: value
+                                }
+                            })
+                            return;
+                        }
                         setFormValue(prev => {
                             return {
                                 ...prev,
@@ -52,7 +78,7 @@ interface InputProps {
     name: string,
     required?: boolean,
     type?: React.HTMLInputTypeAttribute,
-    label: string,
+    label?: string,
     textArea?: boolean,
     placeholder: string
 }

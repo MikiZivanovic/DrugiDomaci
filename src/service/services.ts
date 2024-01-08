@@ -110,7 +110,7 @@ export async function register(data: RegisterUser) {
 }
 
 export async function logout() {
-    await axios.post('/api/delete');
+    await axios.post('/api/logout');
     localStorage.removeItem('token');
     axios.defaults.headers.common.Authorization = undefined;
 }
