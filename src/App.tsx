@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { User } from './model';
-import { getUser } from './service/services';
+import { getUser, login, register } from './service/services';
 import Loader from './components/Loader';
 import HomeLayout from './components/HomeLayout';
 import { Route, Routes } from 'react-router';
@@ -32,10 +32,26 @@ function App() {
   }
   if (!user) {
     return (
-      <HomeLayout>
+      <HomeLayout error={error} removeError={() => setError('')}>
         <Routes>
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='*' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage
+            onSubmit={val => {
+              register(val)
+                .then(setUser)
+                .catch(err => {
+                  setError(err.message)
+                })
+            }}
+          />} />
+          <Route path='*' element={<LoginPage
+            onLogin={async (email, password) => {
+              login(email, password)
+                .then(setUser)
+                .catch(err => {
+                  setError(err.message)
+                })
+            }}
+          />} />
         </Routes>
       </HomeLayout>
     )

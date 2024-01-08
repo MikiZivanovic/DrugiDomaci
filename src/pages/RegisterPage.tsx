@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Form from '../components/form/Form'
 import { Link } from 'react-router-dom'
 
-export default function RegisterPage() {
+interface Props {
+    onSubmit: (data: any) => void
+}
+
+export default function RegisterPage(props: Props) {
     return (
         <div>
             <Form title='Register'
                 onSubmit={(val) => {
-
+                    if (val.repeat !== val.password) {
+                        return;
+                    }
+                    props.onSubmit(val);
                 }}
             >
                 <Form.Input label='First name' placeholder='First name...' name='firstName' required />
@@ -15,10 +22,10 @@ export default function RegisterPage() {
                 <Form.Input label='Email' placeholder='Email...' name='email' type='email' required />
                 <Form.Input label='Password' placeholder='password...' name='password' type='password' required />
                 <Form.Input label='Repeat password' placeholder='Repeat...' name='repeat' type='password' required />
-                <button className='btn btn-primary mt-2 form-control'>Login</button>
+                <button className='btn btn-primary mt-2 form-control'>Register</button>
             </Form>
-            <Link to='/register'>
-                <button className='btn btn-secondary mt-2 form-control'>Register</button>
+            <Link to='/'>
+                <button className='btn btn-secondary mt-2 form-control'>Back to login</button>
             </Link>
         </div>
     )

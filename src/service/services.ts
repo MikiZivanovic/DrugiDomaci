@@ -117,6 +117,9 @@ export async function logout() {
 
 export async function getUser() {
     const token = localStorage.getItem('token');
+    if (!token) {
+        return;
+    }
     try {
         const res = await axios.get('/api/user/', {
             headers: {
