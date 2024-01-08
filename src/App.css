@@ -13,3 +13,15 @@
 .main {
   height: 100vh;
 }
+
+.home-layout {
+  height: 100vh;
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCmuPjLLWAecXQyiDymDFfXFYxcPBJbYKTtw&usqp=CAU');
+  background-size: cover;
+}
+
+.home-content {
+  padding: 20px;
+  opacity: 0.9;
+  background-color: white;
+}

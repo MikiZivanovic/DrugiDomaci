@@ -3,6 +3,10 @@ import './App.css';
 import { User } from './model';
 import { getUser } from './service/services';
 import Loader from './components/Loader';
+import HomeLayout from './components/HomeLayout';
+import { Route, Routes } from 'react-router';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -26,7 +30,16 @@ function App() {
       </div>
     )
   }
-
+  if (!user) {
+    return (
+      <HomeLayout>
+        <Routes>
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='*' element={<LoginPage />} />
+        </Routes>
+      </HomeLayout>
+    )
+  }
   return (
     <div className="App">
       <header className="App-header">
