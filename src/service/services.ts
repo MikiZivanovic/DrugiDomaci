@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Course, CourseCollection, Label } from "../model";
+import { Course, CourseCollection, Label, User } from "../model";
 
 
 export async function getLabels() {
@@ -25,9 +25,111 @@ export async function getCourseById(id: number) {
         return res.data as Course;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data.message)
+            throw new Error(error.response?.data.error)
         }
         throw new Error("Unexpected error")
     }
 
+}
+
+interface CreateCourseData {
+
+}
+
+export async function createCourse(data: CreateCourseData) {
+    try {
+        const res = await axios.post('/api/courses', data);
+        return res.data as Course;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.error)
+        }
+        throw new Error("Unexpected error")
+    }
+}
+
+export async function updateCourse(courseId: number, data: CreateCourseData) {
+    try {
+        const res = await axios.put('/api/courses/' + courseId, data);
+        return res.data as Course;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.error)
+        }
+        throw new Error("Unexpected error")
+    }
+}
+
+export async function deleteCourse(courseId: number) {
+    try {
+        await axios.delete('/api/courses/' + courseId);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.error)
+        }
+        throw new Error("Unexpected error")
+    }
+}
+
+export async function login(email: string, password: string) {
+    try {
+        const res = await axios.post('/api/login/', { email, password });
+        const token = res.data.token;
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common.Authorization = 'Bearer ' + token;
+        return res.data.user as User;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.message)
+        }
+        throw new Error("Unexpected error")
+    }
+}
+
+export interface RegisterUser {
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+
+}
+
+export async function register(data: RegisterUser) {
+    try {
+        const res = await axios.post('/api/register/', data);
+        const token = res.data.token;
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common.Authorization = 'Bearer ' + token;
+        return res.data.user as User;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.message)
+        }
+        throw new Error("Unexpected error")
+    }
+}
+
+export async function logout() {
+    await axios.post('/api/delete');
+    localStorage.removeItem('token');
+    axios.defaults.headers.common.Authorization = undefined;
+}
+
+export async function getUser() {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.get('/api/user/', {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        });
+        axios.defaults.headers.common.Authorization = 'Bearer ' + token;
+        return res.data as User;
+    } catch (error) {
+        localStorage.removeItem('token');
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data.message)
+        }
+        throw new Error("Unexpected error")
+    }
 }
