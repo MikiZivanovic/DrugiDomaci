@@ -8,6 +8,7 @@ import { Route, Routes } from 'react-router';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import Navbar from './components/Navbar';
+import UserCoursesPage from './pages/UserCoursesPage';
 
 function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -64,7 +65,9 @@ function App() {
           .then(() => setUser(undefined))
       }} />
       <HomeLayout error={error} removeError={() => setError('')}>
-        asd
+        <Routes>
+          <Route path='*' element={<UserCoursesPage />} />
+        </Routes>
       </HomeLayout>
     </div>
   );
