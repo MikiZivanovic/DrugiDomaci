@@ -19,7 +19,7 @@ export default function LoginPage(props: Props) {
                 <button className='btn btn-primary mt-2 form-control'>Login</button>
             </Form>
             <Link to='/register'>
-                <button className='btn btn-secondary mt-2 form-control'>Got to register</button>
+                <button className='btn btn-secondary mt-2 form-control'>Go to register</button>
             </Link>
         </div>
     )

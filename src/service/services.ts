@@ -25,18 +25,18 @@ export async function getCourseById(id: number) {
         return res.data as Course;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            throw new Error(error.response?.data.error)
+            if (error.response?.status === 404) {
+                return undefined;
+            }
+            throw new Error(error.response?.data.message)
         }
         throw new Error("Unexpected error")
     }
 
 }
 
-interface CreateCourseData {
 
-}
-
-export async function createCourse(data: CreateCourseData) {
+export async function createCourse(data: any) {
     try {
         const res = await axios.post('/api/courses', data);
         return res.data as Course;
@@ -48,7 +48,7 @@ export async function createCourse(data: CreateCourseData) {
     }
 }
 
-export async function updateCourse(courseId: number, data: CreateCourseData) {
+export async function updateCourse(courseId: number, data: any) {
     try {
         const res = await axios.put('/api/courses/' + courseId, data);
         return res.data as Course;

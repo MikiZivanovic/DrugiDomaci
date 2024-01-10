@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import Navbar from './components/Navbar';
 import UserCoursesPage from './pages/UserCoursesPage';
+import UserCoursePage from './pages/UserCoursePage';
 
 function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -46,7 +47,7 @@ function App() {
             }}
           />} />
           <Route path='*' element={<LoginPage
-            onLogin={async (email, password) => {
+            onLogin={(email, password) => {
               login(email, password)
                 .then(setUser)
                 .catch(err => {
@@ -67,6 +68,7 @@ function App() {
       <HomeLayout error={error} removeError={() => setError('')}>
         <Routes>
           <Route path='*' element={<UserCoursesPage />} />
+          <Route path='course/:id' element={<UserCoursePage />} />
         </Routes>
       </HomeLayout>
     </div>

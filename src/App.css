@@ -23,14 +23,18 @@
 .home-content {
   padding: 20px;
   opacity: 0.9;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: white;
 }
 
 .flex-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  
+  overflow-y: auto;
+  flex: 1
 }
 
 .search-filter {
@@ -41,4 +45,20 @@
 
 .search-form {
   flex: 1;
+}
+
+.course-card {
+  cursor: pointer;
+  transition: all 200ms;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
 }

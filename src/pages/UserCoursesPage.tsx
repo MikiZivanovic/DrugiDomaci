@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { CourseCollection, Label } from '../model';
+import { CourseCollection } from '../model';
 import Loader from '../components/Loader';
-import { getLabels, searchCourses } from '../service/services';
+import { searchCourses } from '../service/services';
 import CourseCard from '../components/CourseCard';
 import CourseFilter from '../components/CourseFilter';
+import { useNavigate } from 'react-router';
 
 export default function UserCoursesPage() {
     const [searchParams, setSearchParams] = useState<any>({})
     const [loading, setLoading] = useState(true);
     const [courses, setCourses] = useState<CourseCollection | undefined>(undefined)
-    const [labels, setLabels] = useState<Label[]>([])
-
-    useEffect(() => {
-        getLabels()
-            .then(setLabels)
-    }, [])
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -23,14 +19,13 @@ export default function UserCoursesPage() {
             .finally(() => setLoading(false))
     }, [searchParams])
     return (
-        <div>
+        <div className='page'>
             <h2 className='mt-2 text-center'>
                 <strong>Courses</strong>
             </h2>
             <CourseFilter
                 value={searchParams}
                 onChange={setSearchParams}
-                labels={labels}
                 maxPage={courses && courses.data.length > 0 ? Math.ceil(courses.total / courses.data.length) : 1}
             />
             {
@@ -38,7 +33,9 @@ export default function UserCoursesPage() {
                     <div className='flex-container'>
                         {courses?.data.map(course => {
                             return (
-                                <div className='mt-2 p-1' key={course.id}>
+                                <div onClick={() => {
+                                    navigate('/course/' + course.id);
+                                }} className='mt-2 p-1 course-card' key={course.id}>
                                     <CourseCard course={course} />
                                 </div>
                             )
