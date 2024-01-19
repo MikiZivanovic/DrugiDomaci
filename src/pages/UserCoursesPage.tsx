@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { CourseCollection } from '../model';
-import Loader from '../components/Loader';
-import { searchCourses } from '../service/services';
+import React, { useNavigate } from 'react-router';
 import CourseCard from '../components/CourseCard';
 import CourseFilter from '../components/CourseFilter';
-import { useNavigate } from 'react-router';
+import Loader from '../components/Loader';
+import { useCourses } from '../hooks/useCourses';
 
 export default function UserCoursesPage() {
-    const [searchParams, setSearchParams] = useState<any>({})
-    const [loading, setLoading] = useState(true);
-    const [courses, setCourses] = useState<CourseCollection | undefined>(undefined)
+    const { searchParams, courses, loading, setSearchParams } = useCourses();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setLoading(true);
-        searchCourses(searchParams)
-            .then(setCourses)
-            .finally(() => setLoading(false))
-    }, [searchParams])
     return (
         <div className='page'>
             <h2 className='mt-2 text-center'>
@@ -26,7 +15,7 @@ export default function UserCoursesPage() {
             <CourseFilter
                 value={searchParams}
                 onChange={setSearchParams}
-                maxPage={courses && courses.data.length > 0 ? Math.ceil(courses.total / courses.data.length) : 1}
+                maxPage={courses ? Math.ceil(courses.total / 20) : 1}
             />
             {
                 loading ? (<Loader />) : (

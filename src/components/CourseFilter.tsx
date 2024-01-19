@@ -17,13 +17,17 @@ export default function CourseFilter(props: Props) {
             <button
                 onClick={() => {
                     props.onChange((prev: any) => {
+                        const newValue = Math.max(1, (prev.page || 0) - 1);
+                        if (newValue === prev.page) {
+                            return prev;
+                        }
                         return {
                             ...prev,
-                            page: (prev.page || 0) - 1
+                            page: newValue
                         }
                     })
                 }}
-                disabled={props.value.page === 0}
+                disabled={props.value.page === 1}
                 className="btn btn-white mt-3 border-dark"
             > &laquo;</button>
             <button

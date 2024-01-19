@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Navbar from './components/Navbar';
 import UserCoursesPage from './pages/UserCoursesPage';
 import UserCoursePage from './pages/UserCoursePage';
+import AdminCoursesPage from './pages/AdminCoursesPage';
 
 function App() {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -55,6 +56,15 @@ function App() {
                 })
             }}
           />} />
+        </Routes>
+      </HomeLayout>
+    )
+  }
+  if (user.type === 'admin') {
+    return (
+      <HomeLayout error={error} removeError={() => setError('')}>
+        <Routes>
+          <Route path='*' element={<AdminCoursesPage />} />
         </Routes>
       </HomeLayout>
     )
